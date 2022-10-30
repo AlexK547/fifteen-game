@@ -6,12 +6,12 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    filename: 'main[contenthash].js'
+    filename: 'main.js'
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Fifteen game',
-      filename: 'main.html',
+      filename: 'index.html',
       template: "src/index.html"
     })
   ],
