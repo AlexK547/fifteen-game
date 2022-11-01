@@ -8,6 +8,12 @@
   width: 600px;
   margin-top: 100px;
 }
+@media only screen and (max-width: 719px) {
+  .container {
+    width: 310px;
+    margin-top: 30px;
+  }
+}
 
 .buttons {
   display: flex;
@@ -21,6 +27,13 @@
   color: #fff;
   border-radius: 10px;
 }
+@media only screen and (max-width: 719px) {
+  .buttons__item {
+    height: 30px;
+    padding: 3px;
+    font-size: 0.8rem;
+  }
+}
 
 .main-field {
   width: 500px;
@@ -31,6 +44,7 @@
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  position: relative;
 }
 .main-field .item {
   display: flex;
@@ -40,11 +54,18 @@
   border: 1px solid #fff;
   border-radius: 10px;
   background-color: darkcyan;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all ease 0.5s;
 }
 @media only screen and (max-width: 719px) {
   .main-field {
     width: 300px;
     height: 300px;
+  }
+  .main-field .item {
+    font-size: 1rem;
   }
 }
 
