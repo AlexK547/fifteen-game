@@ -1,5 +1,9 @@
 import "../css/styles.css";
 
+let sizeField = 4;
+let arrayElements = [];
+let emptyElement = {};
+
 document.body.insertAdjacentHTML('afterbegin', '<div class="container"></div>');
 
 const container = document.querySelector('.container');
@@ -11,28 +15,30 @@ buttons.classList.add('buttons');
 const buttonShuffle = document.createElement('button');
 buttonShuffle.innerHTML = "Suffle and start";
 buttonShuffle.classList.add('buttons__item');
-const buttonStop = document.createElement('button');
-buttonStop.innerHTML = "Stop";
-buttonStop.classList.add('buttons__item');
-const buttonSave = document.createElement('button');
-buttonSave.innerHTML = "Save";
-buttonSave.classList.add('buttons__item');
-const buttonResults = document.createElement('button');
-buttonResults.innerHTML = "Results";
-buttonResults.classList.add('buttons__item');
+buttonShuffle.addEventListener('click', () => {
+  createField(sizeField);
+  changeFrameSize(sizeField);
+});
+// const buttonStop = document.createElement('button');
+// buttonStop.innerHTML = "Stop";
+// buttonStop.classList.add('buttons__item');
+// const buttonSave = document.createElement('button');
+// buttonSave.innerHTML = "Save";
+// buttonSave.classList.add('buttons__item');
+// const buttonResults = document.createElement('button');
+// buttonResults.innerHTML = "Results";
+// buttonResults.classList.add('buttons__item');
 
 buttons.appendChild(buttonShuffle);
-buttons.appendChild(buttonStop);
-buttons.appendChild(buttonSave);
-buttons.appendChild(buttonResults);
+// buttons.appendChild(buttonStop);
+// buttons.appendChild(buttonSave);
+// buttons.appendChild(buttonResults);
 
 container.appendChild(buttons);
 
 // Create field
 
-let sizeField = 4;
-let arrayElements = [];
-let emptyElement = {};
+
 
 const mainField = document.createElement('div');
 mainField.classList.add('main-field');
@@ -66,10 +72,6 @@ function createField(sizeField) {
         item.style.visibility = "hidden";
       }
 
-      item.addEventListener('click', () => {
-        console.log(x, y);
-      });
-
       mainField.appendChild(item);
     }
 
@@ -79,6 +81,57 @@ function createField(sizeField) {
 
 createField(sizeField);
 container.appendChild(mainField);
+
+mainField.addEventListener('click', (event) => {
+  changeElements(event.target);
+});
+
+function getCoords(item) {
+  let coords = {};
+
+  for (let y = 0; y < sizeField; y++) {
+    for (let x = 0; x < sizeField; x++) {
+      if (item.innerHTML == arrayElements[y][x]) {
+        coords.y = y;
+        coords.x = x;
+      }
+    }
+  }
+
+  return coords;
+}
+
+function changeElements(item) {
+  let coords = getCoords(item);
+  let newX = emptyElement.x;
+  let newY = emptyElement.y;
+  let tempElem = item.innerHTML;
+
+  let size;
+  if (document.body.clientWidth >= 720) {
+    size = 500/sizeField;
+  } else {
+    size = 300/sizeField;
+  }
+
+  if (isEmpty(item)) {
+    item.style.left = newX * size + "px";
+    item.style.top = newY * size + "px";
+    arrayElements[coords.y][coords.x] = arrayElements[newY][newX];
+    arrayElements[newY][newX] = tempElem;
+  
+    emptyElement.x = coords.x;
+    emptyElement.y = coords.y;
+  }
+}
+
+function isEmpty(item) {
+  let coords = getCoords(item);
+  let difX = Math.abs(coords.x - emptyElement.x);
+  let difY = Math.abs(coords.y - emptyElement.y);
+
+  return (coords.x === emptyElement.x || coords.y === emptyElement.y) && (difX === 1 || difY === 1);
+}
 
 // Change size
 
@@ -118,7 +171,7 @@ function createArrayElements(sizeField) {
   for (let i = 1; i <= countNumbers; i++) {
     arrayNumbers.push(i);
   }
-  arrayNumbers.sort((a, b) => Math.random() - 0.5);
+  arrayNumbers.sort(() => Math.random() - 0.5);
 
   arrayElements = [];
 
@@ -131,7 +184,6 @@ function createArrayElements(sizeField) {
 
     arrayElements.push(arrayRow);
   }
-  
-  console.log(arrayElements);
+
 }
 
